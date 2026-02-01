@@ -50,9 +50,16 @@
                             <div class="row g-2">
                                 <div class="col-md-8">
                                     <select name="bulan[]" class="form-select" multiple size="3" style="min-height: 80px;">
+                                        @php
+                                            $namaBulan = [
+                                                1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April',
+                                                5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus',
+                                                9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'
+                                            ];
+                                        @endphp
                                         @for($i = 1; $i <= 12; $i++)
                                             <option value="{{ $i }}" {{ in_array($i, $bulans) ? 'selected' : '' }}>
-                                                {{ \Carbon\Carbon::create()->month($i)->translatedFormat('F') }}
+                                                {{ $namaBulan[$i] }}
                                             </option>
                                         @endfor
                                     </select>
@@ -122,8 +129,8 @@
                                 <small class="text-muted">{{ $row->user->email ?? '' }}</small>
                             </td>
 
-                            <td>{{ \Carbon\Carbon::parse($row->tanggal_sewa)->format('d M Y') }}</td>
-                            <td>{{ \Carbon\Carbon::parse($row->tanggal_kembali)->format('d M Y') }}</td>
+                            <td>{{ date('d M Y', strtotime($row->tanggal_sewa)) }}</td>
+                            <td>{{ date('d M Y', strtotime($row->tanggal_kembali)) }}</td>
 
                             <td>
                                 @if($row->status == 'disewa')

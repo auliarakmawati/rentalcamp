@@ -41,7 +41,7 @@
                 <div class="col-6 text-end">
                     <small class="text-muted d-block">TANGGAL KEMBALI</small>
                     <span class="fw-bold">
-                        {{ \Carbon\Carbon::parse($pengembalian->tanggal_dikembalikan)->format('d/m/Y') }}
+                        {{ date('d/m/Y', strtotime($pengembalian->tanggal_dikembalikan)) }}
                     </span>
                 </div>
             </div>
@@ -60,11 +60,11 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <small class="text-muted d-block">TGL SEWA</small>
-                    <span>{{ \Carbon\Carbon::parse($pengembalian->penyewaan->tanggal_sewa)->format('d/m/Y') }}</span>
+                    <span>{{ date('d/m/Y', strtotime($pengembalian->penyewaan->tanggal_sewa)) }}</span>
                 </div>
                 <div class="col-6 text-end">
                     <small class="text-muted d-block">JATUH TEMPO</small>
-                    <span>{{ \Carbon\Carbon::parse($pengembalian->penyewaan->tanggal_kembali)->format('d/m/Y') }}</span>
+                    <span>{{ date('d/m/Y', strtotime($pengembalian->penyewaan->tanggal_kembali)) }}</span>
                 </div>
             </div>
 
@@ -96,9 +96,25 @@
                     </tr>
                     @if($pengembalian->denda > 0)
                     @php
-                        $due = \Carbon\Carbon::parse($pengembalian->penyewaan->tanggal_kembali)->startOfDay();
-                        $actual = \Carbon\Carbon::parse($pengembalian->tanggal_dikembalikan)->startOfDay();
-                        $hariTelat = (int) $due->diffInDays($actual, false);
+                        $due = new DateTime($pengembalian->penyewaan->tanggal_kembali);
+                        $due->setTime(0,0,0);
+                        $actual = new DateTime($pengembalian->tanggal_dikembalikan);
+                        $actual->setTime(0,0,0);
+                        $diff = $due->diff($actual);
+                        $hariTelat = (int) $diff->days; // Using days property directly for non-negative
+                        if ($diff->invert) { // invert is 1 if interval is negative (actual < due)
+                             $hariTelat = 0;
+                        } else {
+                             // Correct logic: if actual > due, verify invert is 0
+                             // However, diff days is always positive. We need 'r' or manual check.
+                             if ($actual <= $due) $hariTelat = 0;
+                        }
+                        // Simplify:
+                        if ($actual > $due) {
+                             $hariTelat = $actual->diff($due)->days;
+                        } else {
+                             $hariTelat = 0;
+                        }
                     @endphp
                     <tr class="text-danger">
                         <td colspan="2" class="fw-bold">

@@ -56,11 +56,15 @@
                 <tbody>
                     @forelse ($penyewaan as $p)
                         @php
-                            $jatuhTempo = \Carbon\Carbon::parse($p->tanggal_kembali);
-                            $hariIni = \Carbon\Carbon::now();
-                            $telatHari = $hariIni->gt($jatuhTempo)
-                                ? $hariIni->diffInDays($jatuhTempo)
-                                : 0;
+                            $jatuhTempo = new DateTime($p->tanggal_kembali);
+                            $hariIni = new DateTime();
+                            $jatuhTempo->setTime(0,0,0);
+                            $hariIni->setTime(0,0,0);
+
+                            $telatHari = 0;
+                            if ($hariIni > $jatuhTempo) {
+                                $telatHari = $hariIni->diff($jatuhTempo)->days;
+                            }
                         @endphp
                         <tr>
                             <td class="ps-4">

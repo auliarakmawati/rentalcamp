@@ -39,7 +39,7 @@
                 <div class="col-6 text-end">
                     <small class="text-muted d-block">TANGGAL BAYAR</small>
                     <span class="fw-bold">
-                        {{ \Carbon\Carbon::parse($pembayaran->tanggal_bayar)->format('d/m/Y') }}
+                        {{ date('d/m/Y', strtotime($pembayaran->tanggal_bayar)) }}
                     </span>
                 </div>
             </div>
@@ -59,11 +59,11 @@
             <div class="row mb-4">
                 <div class="col-6">
                     <small class="text-muted d-block">TGL SEWA</small>
-                    <span>{{ \Carbon\Carbon::parse($pembayaran->penyewaan->tanggal_sewa)->format('d/m/Y') }}</span>
+                    <span>{{ date('d/m/Y', strtotime($pembayaran->penyewaan->tanggal_sewa)) }}</span>
                 </div>
                 <div class="col-6 text-end">
                     <small class="text-muted d-block">TGL KEMBALI</small>
-                    <span>{{ \Carbon\Carbon::parse($pembayaran->penyewaan->tanggal_kembali)->format('d/m/Y') }}</span>
+                    <span>{{ date('d/m/Y', strtotime($pembayaran->penyewaan->tanggal_kembali)) }}</span>
                 </div>
             </div>
 
