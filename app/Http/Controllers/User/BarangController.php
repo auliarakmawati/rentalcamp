@@ -21,9 +21,7 @@ class BarangController extends Controller
         return view('user.barang.index', compact('barang'));
     }
 
-    /**
-     * tampilkan detail barang untuk user
-     */
+   
     public function show($id)
     {
         $item = Barang::where('id_barang', $id)->first();

@@ -9,7 +9,7 @@ use App\Models\Barang;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+
 
 class PenyewaanController extends Controller
 {
@@ -56,9 +56,12 @@ class PenyewaanController extends Controller
 
         DB::beginTransaction();
         try {
-            $tglSewa    = Carbon::parse($request->tanggal_sewa);
-            $tglKembali = Carbon::parse($request->tanggal_kembali);
-            $durasi     = $tglSewa->diffInDays($tglKembali) + 1;
+            $tglSewa    = new \DateTime($request->tanggal_sewa);
+            $tglKembali = new \DateTime($request->tanggal_kembali);
+            
+            // Hitung durasi inklusif (tanggal sewa sampai kembali dihitung penuh)
+            $diff       = $tglSewa->diff($tglKembali);
+            $durasi     = $diff->days + 1;
 
             $penyewaan = Penyewaan::create([
                 'id_user'         => $request->id_user,
@@ -75,8 +78,6 @@ class PenyewaanController extends Controller
                 if (!$idBarang) continue;
 
                 $qty = (int) $request->jumlah[$key];
-
-                // ambil dan kunci row barang untuk update stok aman
                 $barang = Barang::where('id_barang', $idBarang)->lockForUpdate()->first();
 
                 if (! $barang) {
@@ -97,7 +98,6 @@ class PenyewaanController extends Controller
                     'subtotal'     => $subtotal,
                 ]);
 
-                // kurangi stok
                 $barang->decrement('stok', $qty);
             }
 

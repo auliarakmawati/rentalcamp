@@ -147,7 +147,6 @@
     </form>
 </div>
 
-{{-- JS --}}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <script>
@@ -165,12 +164,11 @@ function updateRow(row){
     const qtyInput = row.querySelector('.qty');
     let qty = parseInt(qtyInput.value || 1);
 
-    // Update stok display
     const stokCell = row.querySelector('.stok-info');
     if (opt?.value) {
         stokCell.textContent = stok;
         qtyInput.max = stok;
-        // Pastikan jumlah tidak melebihi stok
+        
         if (qty > stok) {
             qty = stok;
             qtyInput.value = stok;

@@ -8,7 +8,7 @@ use App\Models\Pengembalian;
 use App\Models\Barang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Carbon\Carbon;
+
 
 class PengembalianController extends Controller
 {
@@ -53,31 +53,34 @@ class PengembalianController extends Controller
 
         DB::beginTransaction();
         try {
-            // lock penyewaan
             $penyewaan = Penyewaan::with('detail')->lockForUpdate()->findOrFail($request->id_penyewaan);
 
-            // jangan proses jika sudah dikembalikan
             if ($penyewaan->status !== 'disewa') {
                 throw new \Exception('Penyewaan ini sudah diproses pengembaliannya.');
             }
 
-            // hindari double pengembalian
             if ($penyewaan->pengembalian) {
                 throw new \Exception('Pengembalian untuk penyewaan ini sudah tercatat.');
             }
 
-            $due = Carbon::parse($penyewaan->tanggal_kembali)->startOfDay();
-            $actual = Carbon::parse($request->tanggal_dikembalikan)->startOfDay();
+            // Gunakan DateTime native PHP
+            $due = new \DateTime($penyewaan->tanggal_kembali);
+            $due->setTime(0, 0, 0);
 
-            // Hitung selisih hari (positif jika telat)
-            $hariTelat = (int) $due->diffInDays($actual, false);
+            $actual = new \DateTime($request->tanggal_dikembalikan);
+            $actual->setTime(0, 0, 0);
+
+            // Hitung selisih hari
+            // diff mengembalikan DateInterval. %r%a akan menghasilkan signed integer hari.
+            $interval = $due->diff($actual);
+            $hariTelat = (int) $interval->format('%r%a');
+
             $totalDenda = 0;
 
             if ($hariTelat > 0) {
                 $totalDenda = $hariTelat * 3000;
             }
 
-            // kembalikan stok barang
             foreach ($penyewaan->detail as $detail) {
                 $barang = Barang::where('id_barang', $detail->id_barang)->lockForUpdate()->first();
                 if ($barang) {
@@ -85,7 +88,6 @@ class PengembalianController extends Controller
                 }
             }
 
-            // catat pengembalian
             $pengembalian = Pengembalian::create([
                 'id_penyewaan'           => $penyewaan->id_penyewaan,
                 'tanggal_dikembalikan'   => $actual->format('Y-m-d H:i:s'),
@@ -93,7 +95,6 @@ class PengembalianController extends Controller
                 'denda'                  => $totalDenda,
             ]);
 
-            // update status penyewaan
             $penyewaan->update([
                 'tanggal_dikembalikan' => $actual->format('Y-m-d H:i:s'),
                 'denda'               => $totalDenda,
@@ -102,7 +103,6 @@ class PengembalianController extends Controller
 
             DB::commit();
 
-            // Redirect ke halaman nota pengembalian
             return redirect()->route('admin.pengembalian.receipt', $pengembalian->id_pengembalian)
                 ->with('success', 'Pengembalian berhasil dicatat.');
         } catch (\Exception $e) {

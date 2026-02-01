@@ -48,7 +48,6 @@
             position: relative;
         }
 
-        /* logo di kanan atas form */
         .box .logo-small {
             position: absolute;
             top: -60px;
@@ -117,8 +116,7 @@
 
         <div class="right">
             <div class="box">
-
-                <!-- LOGO DI KANAN ATAS FORM -->
+                
                 <img src="/img/logoo.png" class="logo">
 
                 <h2>Selamat Datang, Admin</h2>

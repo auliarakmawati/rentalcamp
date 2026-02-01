@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Storage;
 
 class BarangController extends Controller
 {
-    // menampilkan daftar barang (Admin)
+  
     public function index(Request $request)
     {
         $q = $request->q;

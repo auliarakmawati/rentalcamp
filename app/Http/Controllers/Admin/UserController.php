@@ -10,7 +10,6 @@ use Illuminate\Validation\Rule;
 
 class UserController extends Controller
 {
-    //list penyewa
     public function index(Request $request)
     {
         $q = $request->q;
@@ -27,13 +26,10 @@ class UserController extends Controller
         return view('admin.users.index', compact('users'));
     }
 
-    //form tambah penyewa
     public function create()
     {
         return view('admin.users.create');
     }
-
-    //simpan penyewa baru
     public function store(Request $request)
     {
         $request->validate([
@@ -48,7 +44,7 @@ class UserController extends Controller
             'email'    => $request->email,
             'no_hp'    => $request->no_hp,
             'alamat'   => $request->alamat,
-            'role'     => 'user', // pelanggan
+            'role'     => 'user',
             'password' => Hash::make('pelanggan'),
         ]);
 
@@ -56,8 +52,6 @@ class UserController extends Controller
                          ->with('success', 'Pelanggan berhasil ditambahkan');
     }
 
-
-    //form edit penyewa
     public function edit($id)
     {
         $user = User::where('id_user', $id)
@@ -67,8 +61,6 @@ class UserController extends Controller
         return view('admin.users.edit', compact('user'));
     }
 
-
-   //update or edit penyewa
     public function update(Request $request, $id)
     {
         $user = User::where('id_user', $id)
@@ -103,8 +95,6 @@ class UserController extends Controller
         return redirect()->route('admin.users.index')
                          ->with('success', 'Data pelanggan berhasil diperbarui');
     }
-
-    //hapus penyewa
         public function destroy($id)
     {
         $user = User::where('id_user', $id)

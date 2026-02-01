@@ -2,7 +2,6 @@
 
 @section('content')
 <style>
-
     .page-head{
         display:flex;
         justify-content:space-between;
@@ -112,7 +111,7 @@
                         <td>
                             <div class="fw-bold fs-5 text-dark">{{ $b->total_stok }}</div>
                             <small class="text-muted d-block" style="font-size: 0.75rem;">
-                                <span class="text-success">Tersedia: {{ $b->stok }}</span> |
+                                <span class="text-success">Tersedia: {{ $b->stok }}</span> | 
                                 <span class="text-warning">Disewa: {{ $b->sedang_disewa }}</span>
                             </small>
                         </td>
@@ -150,7 +149,7 @@
             </table>
         </div>
 
-
+        <!-- Pagination Links -->
         @if($barang->hasPages())
         <div class="d-flex justify-content-center mt-3">
             {{ $barang->appends(request()->query())->links('pagination::bootstrap-5') }}

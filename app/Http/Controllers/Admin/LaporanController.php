@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Penyewaan;
 use Illuminate\Http\Request;
-use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
+
 
 class LaporanController extends Controller
 {
@@ -13,22 +14,20 @@ class LaporanController extends Controller
     {
         $startDate = $request->input('start_date');
         $endDate   = $request->input('end_date');
-        $bulans    = $request->input('bulan', [date('m')]); // array
+        $bulans    = $request->input('bulan', [date('m')]);
         $tahun     = $request->input('tahun', date('Y'));
 
-        // Pastikan $bulans selalu array
         if (!is_array($bulans)) {
             $bulans = [$bulans];
         }
 
         $query = Penyewaan::with('user');
 
-        // Jika ada range tanggal (Prioritas Utama)
         if ($startDate && $endDate) {
             $query->whereBetween('tanggal_sewa', [$startDate, $endDate]);
         } else {
-            // Jika filter per bulan & tahun
-            $query->whereIn(\DB::raw('MONTH(tanggal_sewa)'), $bulans)
+
+            $query->whereIn(DB::raw('MONTH(tanggal_sewa)'), $bulans)
                   ->whereYear('tanggal_sewa', $tahun);
         }
 

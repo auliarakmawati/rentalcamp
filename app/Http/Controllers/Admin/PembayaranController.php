@@ -51,11 +51,10 @@ class PembayaranController extends Controller
         try {
             $penyewaan = Penyewaan::findOrFail($request->id_penyewaan);
 
-            // simpan pembayaran
             $pembayaran = Pembayaran::create([
                 'id_penyewaan' => $penyewaan->id_penyewaan,
                 'jumlah_bayar' => $request->jumlah_bayar,
-                'metode'       => 'tunai', 
+                'metode'       => 'tunai',
                 'tanggal_bayar'=> now()->toDateString(),
             ]);
 

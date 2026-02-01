@@ -16,7 +16,6 @@
     </div>
 
     <div class="row">
-        <!-- Informasi Utama -->
         <div class="col-md-4">
             <div class="card border-0 shadow-sm mb-4">
                 <div class="card-header bg-white py-3">
@@ -68,7 +67,7 @@
                         </div>
                         @if($penyewaan->tanggal_dikembalikan)
                         <div class="col-12 border-top pt-2">
-                            <label class="text-muted d-block small text-uppercase">Tgl Dikembalikan</label>
+                            <label class="text-muted d-block small text-uppercase">Tgl Kembali Eksak</label>
                             <span class="fw-bold text-success">{{ date('d M Y', strtotime($penyewaan->tanggal_dikembalikan)) }}</span>
                         </div>
                         @endif
@@ -114,7 +113,6 @@
                 </div>
             </div>
 
-            <!-- Pembayaran & Pengembalian -->
             <div class="row">
                 <div class="col-md-6">
                     <div class="card border-0 shadow-sm h-100">

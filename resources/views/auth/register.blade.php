@@ -18,7 +18,6 @@
             height: 100vh;
         }
 
-        /* BAGIAN KIRI */
         .left {
             flex: 1;
             background-image: url('/img/bg-logreg.jpg');
@@ -26,13 +25,11 @@
             background-position: center;
             position: relative;
 
-            /* center flex */
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* overlay */
         .left::after {
             content: "";
             position: absolute;
@@ -43,7 +40,7 @@
             background: rgba(162, 162, 162, 0.45);
         }
 
-        /* logo yang benar-benar center kiri */
+
         .logo-big {
             position: relative;
             width: 300px; /* ukuran diperbesar */

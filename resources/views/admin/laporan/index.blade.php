@@ -42,7 +42,6 @@
                         </div>
                     </div>
 
-                    <!-- Filter Berdasarkan Bulan & Tahun -->
                     <div class="col-lg-7">
                         <div class="p-3 bg-white rounded shadow-sm h-100">
                             <label class="form-label small fw-bold text-muted text-uppercase mb-3 d-block">

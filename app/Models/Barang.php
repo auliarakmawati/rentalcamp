@@ -20,8 +20,6 @@ class Barang extends Model
     {
         return $this->hasMany(PenyewaanDetail::class, 'id_barang');
     }
-
-    // hitung berapa unit yang sedang berada di tangan penyewa
     public function getSedangDisewaAttribute()
     {
         return $this->penyewaanDetail()
@@ -31,7 +29,6 @@ class Barang extends Model
             ->sum('jumlah');
     }
 
-    // hitung total barang yang dimiliki (Tersedia + Disewa)
     public function getTotalStokAttribute()
     {
         return $this->stok + $this->sedang_disewa;

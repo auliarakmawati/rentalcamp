@@ -24,26 +24,22 @@ class Penyewaan extends Model
         'denda',
         'status',
     ];
-    
-    // penyewaan -> user
+
     public function user()
     {
         return $this->belongsTo(User::class, 'id_user', 'id_user');
     }
 
-    // penyewaan -> detail_penyewaan
     public function detail()
     {
         return $this->hasMany(PenyewaanDetail::class, 'id_penyewaan', 'id_penyewaan');
     }
 
-    // penyewaan -> pembayaran
     public function pembayaran()
     {
         return $this->hasOne(Pembayaran::class, 'id_penyewaan', 'id_penyewaan');
     }
 
-    // penyewaan -> pengembalian
     public function pengembalian()
     {
         return $this->hasOne(Pengembalian::class, 'id_penyewaan', 'id_penyewaan');

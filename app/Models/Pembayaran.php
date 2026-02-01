@@ -16,7 +16,6 @@ class Pembayaran extends Model
         'tanggal_bayar',
     ];
 
-    // relasi ke penyewaan
     public function penyewaan()
     {
         return $this->belongsTo(Penyewaan::class, 'id_penyewaan');

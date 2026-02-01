@@ -13,8 +13,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('id_user');
 
             $table->date('tanggal_sewa');
-            $table->date('tanggal_kembali'); // janji balik
-            $table->date('tanggal_dikembalikan')->nullable(); // real balik
+            $table->date('tanggal_kembali');
+            $table->date('tanggal_dikembalikan')->nullable();
 
             $table->integer('total_harga')->default(0);
             $table->integer('denda')->default(0);

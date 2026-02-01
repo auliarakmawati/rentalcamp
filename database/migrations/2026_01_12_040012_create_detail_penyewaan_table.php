@@ -15,13 +15,12 @@ return new class extends Migration
             $table->unsignedBigInteger('id_barang');
 
             $table->integer('jumlah');
-            $table->integer('harga_sewa'); // snapshot harga
+            $table->integer('harga_sewa');
             $table->integer('subtotal');
             $table->integer('denda_per_barang')->default(0);
 
             $table->timestamps();
 
-            // foreign key
             $table->foreign('id_penyewaan')
                   ->references('id_penyewaan')
                   ->on('penyewaan')

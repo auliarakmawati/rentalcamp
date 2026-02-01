@@ -16,13 +16,10 @@ class PenyewaanDetail extends Model
         'subtotal',
     ];
 
-    // detail -> barang
     public function barang()
     {
         return $this->belongsTo(Barang::class, 'id_barang');
     }
-
-    // detail -> penyewaan
     public function penyewaan()
     {
         return $this->belongsTo(Penyewaan::class, 'id_penyewaan');
