@@ -88,9 +88,9 @@
                     <button type="submit" class="btn btn-primary px-4">
                         <i class="bi bi-search me-1"></i> Terapkan Filter
                     </button>
-                    <button type="button" onclick="window.print()" class="btn btn-success px-4">
+                    <a href="{{ route('admin.laporan.print', request()->all()) }}" target="_blank" class="btn btn-success px-4">
                         <i class="bi bi-printer me-1"></i> Cetak Laporan
-                    </button>
+                    </a>
                 </div>
             </form>
         </div>

@@ -54,4 +54,5 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
 
     // laporan
     Route::get('laporan', [\App\Http\Controllers\Admin\LaporanController::class, 'index'])->name('laporan.index');
+    Route::get('laporan/print', [\App\Http\Controllers\Admin\LaporanController::class, 'print'])->name('laporan.print');
 });

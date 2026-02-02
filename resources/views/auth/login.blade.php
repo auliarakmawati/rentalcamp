@@ -13,7 +13,10 @@
             font-family: 'Plus Jakarta Sans', sans-serif;
             box-sizing: border-box;
         }
-        *, *:before, *:after {
+
+        *,
+        *:before,
+        *:after {
             box-sizing: border-box;
         }
 
@@ -107,39 +110,24 @@
         }
     </style>
 </head>
-
 <body>
-
     <div class="container">
-
         <div class="left"></div>
-
         <div class="right">
             <div class="box">
-                
                 <img src="/img/logoo.png" class="logo">
-
                 <h2>Selamat Datang, Admin</h2>
                 <p>Silakan login untuk mengelola sistem.</p>
-
                 <form method="POST" action="/login">
                     @csrf
-
                     <label>Email</label>
                     <input type="email" name="email" required>
-
                     <label>Password</label>
                     <input type="password" name="password" required>
-
                     <button type="submit">Login</button>
                 </form>
-
-
             </div>
         </div>
-
     </div>
-
 </body>
-
 </html>
