@@ -83,11 +83,12 @@
         <thead>
             <tr>
                 <th style="width: 5%">No</th>
-                <th style="width: 25%">Pelanggan</th>
+                <th style="width: 20%">Pelanggan</th>
+                <th style="width: 25%">Barang</th>
                 <th style="width: 15%">Tgl Sewa</th>
                 <th style="width: 15%">Tgl Kembali</th>
-                <th style="width: 15%">Status</th>
-                <th style="width: 25%">Total</th>
+                <th style="width: 10%">Status</th>
+                <th style="width: 15%">Total</th>
             </tr>
         </thead>
         <tbody>
@@ -97,6 +98,13 @@
                     <td>
                         <div>{{ $row->user->nama ?? '-' }}</div>
                         <small>{{ $row->user->email ?? '' }}</small>
+                    </td>
+                    <td>
+                        <ul style="padding-left: 15px; margin: 0;">
+                        @foreach($row->detail as $det)
+                            <li>{{ $det->barang->nama_barang ?? 'Barang dihapus' }} ({{ $det->jumlah }})</li>
+                        @endforeach
+                        </ul>
                     </td>
                     <td class="text-center">{{ date('d/m/Y', strtotime($row->tanggal_sewa)) }}</td>
                     <td class="text-center">{{ date('d/m/Y', strtotime($row->tanggal_kembali)) }}</td>
@@ -115,16 +123,40 @@
                 </tr>
             @empty
                 <tr>
-                    <td colspan="6" class="text-center">Tidak ada data untuk periode ini.</td>
+                    <td colspan="7" class="text-center">Tidak ada data untuk periode ini.</td>
                 </tr>
             @endforelse
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="5" class="text-end" style="font-weight: bold;">Total Pendapatan</td>
+                <td colspan="6" class="text-end" style="font-weight: bold;">Total Pendapatan</td>
                 <td class="text-end" style="font-weight: bold;">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</td>
             </tr>
         </tfoot>
+    </table>
+
+    <h5 style="font-weight: bold; margin-top: 20px;">Ringkasan Alat Disewa</h5>
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th style="width: 60%">Nama Alat</th>
+                <th style="width: 20%">Total Qty</th>
+                <th style="width: 20%">Jumlah Transaksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @forelse($ringkasanBarang as $item)
+                <tr>
+                    <td>{{ $item['nama'] }}</td>
+                    <td class="text-center">{{ $item['total_jumlah'] }}</td>
+                    <td class="text-center">{{ $item['transaksi'] }}</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="3" class="text-center">Tidak ada alat disewa pada periode ini.</td>
+                </tr>
+            @endforelse
+        </tbody>
     </table>
 
     <div style="margin-top: 50px; text-align: right;">

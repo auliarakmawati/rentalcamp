@@ -101,17 +101,19 @@
             <table class="table align-middle mb-0 w-100">
                 <colgroup>
                     <col style="width:5%">
-                    <col style="width:30%">
-                    <col style="width:15%">
-                    <col style="width:15%">
-                    <col style="width:15%">
-                    <col style="width:20%">
+                    <col style="width:25%">
+                    <col style="width:25%">
+                    <col style="width:12%">
+                    <col style="width:12%">
+                    <col style="width:10%">
+                    <col style="width:11%">
                 </colgroup>
 
                 <thead class="table-light">
                     <tr>
                         <th class="ps-4">No</th>
                         <th>Pelanggan</th>
+                        <th>Barang</th>
                         <th>Tgl Sewa</th>
                         <th>Tgl Kembali</th>
                         <th>Status</th>
@@ -127,6 +129,14 @@
                             <td>
                                 <div class="fw-semibold">{{ $row->user->nama ?? '-' }}</div>
                                 <small class="text-muted">{{ $row->user->email ?? '' }}</small>
+                            </td>
+
+                            <td>
+                                <ol class="mb-0 ps-3">
+                                    @foreach($row->detail as $det)
+                                        <li>{{ $det->barang->nama_barang ?? 'Barang dihapus' }} ({{ $det->jumlah }})</li>
+                                    @endforeach
+                                </ol>
                             </td>
 
                             <td>{{ date('d M Y', strtotime($row->tanggal_sewa)) }}</td>

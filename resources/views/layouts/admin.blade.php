@@ -292,6 +292,24 @@
             background-color: var(--primary);
             color: white;
         }
+
+        @media print {
+            .sidebar {
+                display: none !important;
+            }
+            .header {
+                display: none !important;
+            }
+            .content {
+                margin-left: 0 !important;
+            }
+            body {
+                background-color: #fff !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 

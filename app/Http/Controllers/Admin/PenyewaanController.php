@@ -59,7 +59,6 @@ class PenyewaanController extends Controller
             $tglSewa    = new \DateTime($request->tanggal_sewa);
             $tglKembali = new \DateTime($request->tanggal_kembali);
             
-            // Hitung durasi inklusif (tanggal sewa sampai kembali dihitung penuh)
             $diff       = $tglSewa->diff($tglKembali);
             $durasi     = $diff->days + 1;
 

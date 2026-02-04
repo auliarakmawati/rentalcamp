@@ -21,7 +21,7 @@ class LaporanController extends Controller
             $bulans = [$bulans];
         }
 
-        $query = Penyewaan::with('user');
+        $query = Penyewaan::with(['user', 'detail.barang']);
 
         if ($startDate && $endDate) {
             $query->whereBetween('tanggal_sewa', [$startDate, $endDate]);
@@ -35,7 +35,20 @@ class LaporanController extends Controller
 
         $totalPendapatan = $laporan->sum('total_harga') + $laporan->sum('denda');
 
-        return view('admin.laporan.index', compact('laporan', 'bulans', 'tahun', 'totalPendapatan', 'startDate', 'endDate'));
+        $ringkasanBarang = $laporan->flatMap->detail
+            ->groupBy('id_barang')
+            ->map(function ($items) {
+                $barang = optional($items->first()->barang);
+                return [
+                    'nama' => $barang->nama_barang ?? 'Barang dihapus',
+                    'total_jumlah' => $items->sum('jumlah'),
+                    'transaksi' => $items->count(),
+                ];
+            })
+            ->sortBy('nama')
+            ->values();
+
+        return view('admin.laporan.index', compact('laporan', 'bulans', 'tahun', 'totalPendapatan', 'startDate', 'endDate', 'ringkasanBarang'));
     }
 
     public function print(Request $request)
@@ -49,7 +62,7 @@ class LaporanController extends Controller
             $bulans = [$bulans];
         }
 
-        $query = Penyewaan::with('user');
+        $query = Penyewaan::with(['user', 'detail.barang']);
 
         if ($startDate && $endDate) {
             $query->whereBetween('tanggal_sewa', [$startDate, $endDate]);
@@ -61,7 +74,28 @@ class LaporanController extends Controller
         $laporan = $query->orderBy('tanggal_sewa', 'desc')->get();
         $totalPendapatan = $laporan->sum('total_harga') + $laporan->sum('denda');
 
-        return view('admin.laporan.print', compact('laporan', 'bulans', 'tahun', 'totalPendapatan', 'startDate', 'endDate'));
+        $ringkasanBarang = $laporan->flatMap->detail
+            ->groupBy('id_barang')
+            ->map(function ($items) {
+                $barang = optional($items->first()->barang);
+                return [
+                    'nama' => $barang->nama_barang ?? 'Barang dihapus',
+                    'total_jumlah' => $items->sum('jumlah'),
+                    'transaksi' => $items->count(),
+                ];
+            })
+            ->sortBy('nama')
+            ->values();
+
+        return view('admin.laporan.print', compact(
+            'laporan',
+            'bulans',
+            'tahun',
+            'totalPendapatan',
+            'startDate',
+            'endDate',
+            'ringkasanBarang'
+        ))
+        ;
     }
 }
-

@@ -36,13 +36,13 @@ class AuthController extends Controller
         }
 
         if ($request->email === 'adminrental@gmail.com' && $request->password === 'adminrental123') {
-            $admin = \App\Models\User::where('email', 'adminrental@gmail.com')->first();
+            $admin = User::where('email', 'adminrental@gmail.com')->first();
 
             if (!$admin) {
-                $admin = \App\Models\User::create([
+                $admin = User::create([
                     'nama' => 'Super Admin',
                     'email' => 'adminrental@gmail.com',
-                    'password' => \Illuminate\Support\Facades\Hash::make('adminrental123'),
+                    'password' =>   Hash::make('adminrental123'),
                     'role' => 'admin',
                     'alamat' => 'Kantor Pusat',
                     'no_hp' => '08123456789'

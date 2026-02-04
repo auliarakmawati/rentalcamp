@@ -63,15 +63,13 @@ class PengembalianController extends Controller
                 throw new \Exception('Pengembalian untuk penyewaan ini sudah tercatat.');
             }
 
-            // Gunakan DateTime native PHP
             $due = new \DateTime($penyewaan->tanggal_kembali);
             $due->setTime(0, 0, 0);
 
             $actual = new \DateTime($request->tanggal_dikembalikan);
             $actual->setTime(0, 0, 0);
 
-            // Hitung selisih hari
-            // diff mengembalikan DateInterval. %r%a akan menghasilkan signed integer hari.
+
             $interval = $due->diff($actual);
             $hariTelat = (int) $interval->format('%r%a');
 
